@@ -958,8 +958,13 @@ async function readToken(s, token) {
   if (d.a) return { pseudo: ADMIN_NAME, admin: true };
   const users = await load("users", {});
   const u = users[d.p.toLowerCase()];
-  return u ? { pseudo: u.pseudo, discord: u.discord, admin: false } : null;
+  return u ? { pseudo: u.pseudo, discord: u.discord, avatar: u.avatar || null, admin: false } : null;
 }
+var isImg = (v, max) => /^data:image\/(jpeg|png|webp);base64,/.test(v || "") && v.length < max;
+var sysMsg = (o, text, extra = {}) => {
+  o.messages = (o.messages || []).concat({ from: "system", text, at: (/* @__PURE__ */ new Date()).toISOString(), ...extra }).slice(-200);
+  o.unreadClient = (o.unreadClient || 0) + 1;
+};
 function couponProblem(c, pseudo) {
   if (!c) return "Ce code n'existe pas.";
   if (!c.active) return "Ce code n'est plus actif.";
@@ -1083,6 +1088,8 @@ async function handle(action, d, s, origin) {
   switch (action) {
     case "config":
       return {
+        sitesDone: (s.sitesBase || 0) + (await load("orders", [])).filter((o) => o.status === "termin\xE9e" && o.siteUrl).length,
+        adminAvatar: s.adminAvatar || null,
         price: s.price,
         examples: s.examples,
         timer: s.timer && s.timer.active ? s.timer : null,
@@ -1119,6 +1126,7 @@ async function handle(action, d, s, origin) {
       need(true);
       const num = (v) => v === "" || v == null ? null : Math.max(0, Math.floor(Number(v)));
       s.stats = { tiktok: num(d.tiktok), youtube: num(d.youtube), goal: num(d.goal) || 7e3 };
+      if (d.sitesBase !== void 0) s.sitesBase = num(d.sitesBase) || 0;
       await save("settings", s);
       await save("statsCache", null);
       return { stats: s.stats };
@@ -1178,7 +1186,71 @@ async function handle(action, d, s, origin) {
     case "me": {
       need();
       const list = me.admin ? [] : (await orders()).filter((o) => o.user === me.pseudo).reverse();
-      return { user: me, orders: list };
+      return { user: me.admin ? { ...me, avatar: s.adminAvatar || null } : me, orders: list };
+    }
+    case "avatarSave": {
+      need();
+      if (d.img && !isImg(d.img, 2e5)) throw new Fail("Image trop lourde ou invalide.");
+      if (me.admin) {
+        s.adminAvatar = d.img || null;
+        await save("settings", s);
+        return { avatar: s.adminAvatar };
+      }
+      const users = await load("users", {});
+      const u = users[me.pseudo.toLowerCase()];
+      u.avatar = d.img || null;
+      await save("users", users);
+      return { avatar: u.avatar };
+    }
+    // ----- devis -----
+    case "signatureSave": {
+      need(true);
+      if (!isImg(d.sign, 3e5)) throw new Fail("Dessine ta signature.");
+      s.signature = d.sign;
+      await save("settings", s);
+      return { ok: true };
+    }
+    case "quoteSave": {
+      need(true);
+      const list = await orders();
+      const o = findOrder(list, d.orderId);
+      if (o.quote && o.quote.signedAt) throw new Fail("Ce devis est d\xE9j\xE0 sign\xE9 par le client : il ne peut plus \xEAtre modifi\xE9.");
+      const items = (Array.isArray(d.items) ? d.items : []).slice(0, 20).map((x) => ({ label: String(x.label || "").trim().slice(0, 120), price: Math.round(Number(String(x.price).replace(",", ".")) * 100) / 100 })).filter((x) => x.label && x.price >= 0);
+      if (!items.length) throw new Fail("Ajoute au moins une ligne au devis.");
+      const deadline = String(d.deadline || "");
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(deadline)) throw new Fail("Choisis la date de livraison du site.");
+      const sign = isImg(d.sign, 3e5) ? d.sign : s.signature;
+      if (!sign) throw new Fail("Ajoute ta signature au devis.");
+      const total = Math.round(items.reduce((t, x) => t + x.price, 0) * 100) / 100;
+      const fresh = !o.quote;
+      o.quote = { items, total, deadline, note: String(d.note || "").trim().slice(0, 800), adminSign: sign, number: "D-" + o.ref, createdAt: o.quote ? o.quote.createdAt : (/* @__PURE__ */ new Date()).toISOString(), updatedAt: (/* @__PURE__ */ new Date()).toISOString() };
+      sysMsg(o, fresh ? "\u{1F4DD} Devis envoy\xE9 : " + total.toFixed(2).replace(".", ",") + " \u20AC, livraison pr\xE9vue le " + new Date(deadline).toLocaleDateString("fr-FR") + ". Ouvre-le et signe-le pour valider ta commande." : "\u{1F4DD} Le devis a \xE9t\xE9 mis \xE0 jour. Relis-le avant de le signer.", { quote: true });
+      await save("orders", list);
+      return { order: o };
+    }
+    case "quoteSign": {
+      need();
+      if (me.admin) throw new Fail("C'est le client qui signe le devis.");
+      const list = await orders();
+      const o = findOrder(list, d.orderId);
+      if (!o.quote) throw new Fail("Pas encore de devis pour cette demande.");
+      if (o.quote.signedAt) return { order: o };
+      const name = String(d.name || "").trim().slice(0, 60);
+      if (!name) throw new Fail("\xC9cris ton nom sous ta signature.");
+      if (!isImg(d.sign, 3e5)) throw new Fail("Dessine ta signature.");
+      o.quote.clientSign = d.sign;
+      o.quote.clientName = name;
+      o.quote.signedAt = (/* @__PURE__ */ new Date()).toISOString();
+      o.locked = true;
+      if (o.status === "en attente" || o.status === "annul\xE9e") {
+        o.total = o.quote.total;
+        o.price = o.quote.total;
+        o.status = "en attente";
+      }
+      o.messages = (o.messages || []).concat({ from: "system", text: "\u2705 Devis sign\xE9 par " + name + ". La commande est valid\xE9e et ne peut plus \xEAtre modifi\xE9e.", at: (/* @__PURE__ */ new Date()).toISOString() });
+      o.unreadAdmin = (o.unreadAdmin || 0) + 1;
+      await save("orders", list);
+      return { order: o };
     }
     case "quote": {
       const coupons = await load("coupons", {});
@@ -1250,11 +1322,40 @@ async function handle(action, d, s, origin) {
       await save("orders", list);
       return { order: o };
     }
+    // ----- discussion client <-> admin sur une demande -----
+    case "chatGet": {
+      need();
+      const list = await orders();
+      const o = findOrder(list, d.orderId);
+      const key = me.admin ? "unreadAdmin" : "unreadClient";
+      if (o[key]) {
+        o[key] = 0;
+        await save("orders", list);
+      }
+      return { messages: o.messages || [], status: o.status };
+    }
+    case "chatSend": {
+      need();
+      const text = String(d.text || "").trim().slice(0, 2e3);
+      if (!text) throw new Fail("\xC9cris un message.");
+      const list = await orders();
+      const o = findOrder(list, d.orderId);
+      if (!me.admin && d.kind === "modif" && o.locked && o.status !== "termin\xE9e") throw new Fail("Ton devis est sign\xE9 : la commande ne peut plus \xEAtre modifi\xE9e avant la livraison du site.");
+      const kind = ["modif", "probleme"].includes(d.kind) ? d.kind : "msg";
+      o.messages = (o.messages || []).concat({ from: me.admin ? "admin" : "client", text, kind, at: (/* @__PURE__ */ new Date()).toISOString() }).slice(-200);
+      if (kind === "probleme") o.problem = true;
+      if (me.admin) o.unreadClient = (o.unreadClient || 0) + 1;
+      else o.unreadAdmin = (o.unreadAdmin || 0) + 1;
+      o.lastMsgAt = (/* @__PURE__ */ new Date()).toISOString();
+      await save("orders", list);
+      return { messages: o.messages };
+    }
     case "payProof": {
       need();
       const list = await orders();
       const o = findOrder(list, d.orderId);
       if (o.status === "pay\xE9e" || o.status === "termin\xE9e") throw new Fail("Cette demande est d\xE9j\xE0 pay\xE9e.");
+      if (o.quote && !o.quote.signedAt) throw new Fail("Signe d'abord le devis avant de payer.");
       const paypalName = String(d.paypal || "").trim().slice(0, 80);
       if (!paypalName) throw new Fail("Mets ton nom ou ton e-mail PayPal.");
       if (!/^data:image\/(jpeg|png|webp);base64,/.test(d.img || "") || d.img.length > 9e5) throw new Fail("Ajoute la capture d'\xE9cran de ton paiement.");
@@ -1295,6 +1396,8 @@ async function handle(action, d, s, origin) {
         price: s.price,
         examples: s.examples,
         stats: s.stats || {},
+        sitesBase: s.sitesBase || 0,
+        signature: s.signature || null,
         timer: s.timer || null
       };
     }
@@ -1338,7 +1441,11 @@ async function handle(action, d, s, origin) {
       o.status = d.status;
       if (d.status === "termin\xE9e") {
         o.doneAt = o.doneAt || (/* @__PURE__ */ new Date()).toISOString();
-        if (d.siteUrl !== void 0) o.siteUrl = /^https?:\/\//i.test(d.siteUrl || "") ? d.siteUrl : null;
+        if (d.siteUrl !== void 0) {
+          const url = /^https?:\/\//i.test(d.siteUrl || "") ? d.siteUrl : null;
+          if (url && url !== o.siteUrl) sysMsg(o, "\u{1F389} Voici votre site !", { url });
+          o.siteUrl = url;
+        }
       }
       await save("orders", list);
       return { order: o };
