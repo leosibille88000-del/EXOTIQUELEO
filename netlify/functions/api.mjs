@@ -1068,7 +1068,7 @@ async function stats(s) {
   await save("statsCache", out);
   return { ...out, goal: manual.goal || 7e3 };
 }
-async function handle(action, d, s) {
+async function handle(action, d, s, origin) {
   const me = await readToken(s, d.token);
   const need = (admin) => {
     if (!me) throw new Fail("Connecte-toi d'abord.", 401);
@@ -1092,6 +1092,12 @@ async function handle(action, d, s) {
         discord: env("DISCORD_CLIENT_ID") && env("DISCORD_CLIENT_SECRET") ? env("DISCORD_CLIENT_ID") : false,
         adminReady: !!(s.adminHash || env("ADMIN_PASSWORD", "ADMIN_PASS", "ADMIN_PWD", "ADMIN_MDP", "MOT_DE_PASSE_ADMIN"))
       };
+    case "recent": {
+      const since = Date.now() - 48 * 36e5;
+      return {
+        paid: (await orders()).filter((o) => (o.status === "pay\xE9e" || o.status === "termin\xE9e") && o.paidAt && new Date(o.paidAt).getTime() > since).sort((a, b) => b.paidAt.localeCompare(a.paidAt)).slice(0, 5).map((o) => ({ name: o.name || o.user, at: o.paidAt }))
+      };
+    }
     case "stats":
       return await stats(s);
     case "timerSave": {
@@ -1214,13 +1220,22 @@ async function handle(action, d, s) {
       if (!paypal.id() || !paypal.secret()) throw new Fail("Le paiement PayPal n'est pas encore activ\xE9.");
       const r = await paypal.call("/v2/checkout/orders", {
         intent: "CAPTURE",
-        purchase_units: [{ reference_id: o.id, description: "Site EXOTIQUELEO n\xB0 " + o.ref, amount: { currency_code: "EUR", value: o.total.toFixed(2) } }]
+        purchase_units: [{ reference_id: o.id, description: "Site EXOTIQUELEO n\xB0 " + o.ref, amount: { currency_code: "EUR", value: o.total.toFixed(2) } }],
+        payment_source: { paypal: { experience_context: {
+          brand_name: "EXOTIQUELEO",
+          locale: "fr-FR",
+          shipping_preference: "NO_SHIPPING",
+          user_action: "PAY_NOW",
+          return_url: origin + "/?paid=" + o.id,
+          cancel_url: origin + "/?payCancel=" + o.id
+        } } }
       });
       if (!r.id) throw new Fail("PayPal n'a pas pu cr\xE9er le paiement.", 502);
       o.paypalId = r.id;
       if (o.status === "annul\xE9e") o.status = "en attente";
       await save("orders", list);
-      return { paypalId: r.id };
+      const link = (r.links || []).find((l) => l.rel === "payer-action" || l.rel === "approve");
+      return { paypalId: r.id, approveUrl: link ? link.href : null };
     }
     case "payCapture": {
       need();
@@ -1234,6 +1249,30 @@ async function handle(action, d, s) {
       await markPaid(o);
       await save("orders", list);
       return { order: o };
+    }
+    case "payProof": {
+      need();
+      const list = await orders();
+      const o = findOrder(list, d.orderId);
+      if (o.status === "pay\xE9e" || o.status === "termin\xE9e") throw new Fail("Cette demande est d\xE9j\xE0 pay\xE9e.");
+      const paypalName = String(d.paypal || "").trim().slice(0, 80);
+      if (!paypalName) throw new Fail("Mets ton nom ou ton e-mail PayPal.");
+      if (!/^data:image\/(jpeg|png|webp);base64,/.test(d.img || "") || d.img.length > 9e5) throw new Fail("Ajoute la capture d'\xE9cran de ton paiement.");
+      if (o.coupon) {
+        const coupons = await load("coupons", {});
+        const p = couponProblem(coupons[o.coupon], o.user);
+        if (p) throw new Fail(p + " Refais une demande sans ce code.");
+      }
+      await save("proof-" + o.id, { img: d.img });
+      o.proof = { paypal: paypalName, at: (/* @__PURE__ */ new Date()).toISOString() };
+      o.status = "\xE0 v\xE9rifier";
+      await save("orders", list);
+      return { order: o };
+    }
+    case "proofGet": {
+      need(true);
+      const p = await load("proof-" + d.orderId, null);
+      return { img: p ? p.img : null };
     }
     case "payCancel": {
       need();
@@ -1293,7 +1332,9 @@ async function handle(action, d, s) {
       need(true);
       const list = await orders();
       const o = findOrder(list, d.orderId);
-      if (!["en attente", "pay\xE9e", "annul\xE9e", "termin\xE9e"].includes(d.status)) throw new Fail("Statut inconnu.");
+      if (!["en attente", "\xE0 v\xE9rifier", "pay\xE9e", "annul\xE9e", "termin\xE9e"].includes(d.status)) throw new Fail("Statut inconnu.");
+      const wasPaid = o.status === "pay\xE9e" || o.status === "termin\xE9e";
+      if ((d.status === "pay\xE9e" || d.status === "termin\xE9e") && !wasPaid) await markPaid(o);
       o.status = d.status;
       if (d.status === "termin\xE9e") {
         o.doneAt = o.doneAt || (/* @__PURE__ */ new Date()).toISOString();
@@ -1383,7 +1424,7 @@ var api_src_default = async (req) => {
     }
     if (req.method !== "POST") return json({ error: "M\xE9thode non autoris\xE9e." }, 405);
     const d = await req.json().catch(() => ({}));
-    return json(await handle(String(d.action || ""), d, s));
+    return json(await handle(String(d.action || ""), d, s, new URL(req.url).origin));
   } catch (err) {
     if (err instanceof Fail) return json({ error: err.message }, err.status);
     console.error(err);
