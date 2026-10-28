@@ -412,6 +412,103 @@ html, body { overflow-x: clip; }
 .drop-txt b { font-family: var(--display); font-weight: 400; font-size: clamp(24px, 6vw, 32px); text-transform: uppercase; line-height: 1; }
 .drop-txt small { color: var(--muted); font-size: 14px; }
 .drop .proof-prev { justify-self: center; }
+
+/* Discussion */
+.chat-modes { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 10px; }
+.chat-list { display: grid; gap: 10px; align-content: start; height: min(52vh, 460px); overflow-y: auto; padding: 14px; border: 2px solid var(--fg); background: var(--card); overscroll-behavior: contain; }
+.msg { max-width: 82%; padding: 10px 12px; border: 2px solid var(--fg); background: var(--bg); justify-self: start; display: grid; gap: 4px; }
+.msg.me { justify-self: end; background: var(--fg); color: var(--bg); }
+.msg p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg small { font-family: var(--mono); font-size: 11px; opacity: .7; }
+.msg.modif { border-style: dashed; }
+.msg.modif::before { content: "✏️ Demande de modification"; font-family: var(--mono); font-size: 11px; text-transform: uppercase; }
+.chat-form { display: flex; gap: 8px; margin-top: 10px; align-items: stretch; }
+.chat-form textarea { flex: 1; min-width: 0; font: inherit; font-size: 16px; padding: 10px 12px; color: var(--fg); background: var(--bg); border: 2px solid var(--fg); border-radius: 0; resize: none; }
+.chat-form textarea:focus-visible { outline: 2px solid var(--fg); outline-offset: 1px; }
+.badge { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; margin-left: 6px; border-radius: 11px; background: var(--fg); color: var(--bg); font-family: var(--mono); font-size: 12px; }
+.btn.main .badge { background: var(--bg); color: var(--fg); }
+
+/* Devis */
+.dv-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 20px; align-items: start; margin-top: 14px; }
+.dv-wrap.full { grid-template-columns: 1fr; }
+@media (max-width: 900px) { .dv-wrap { grid-template-columns: 1fr; } }
+.dv-side { display: grid; gap: 14px; }
+.dv-side fieldset { margin: 0; border: 2px solid var(--fg); background: var(--card); padding: 16px; display: grid; gap: 12px; min-width: 0; }
+.dv-side legend { font-family: var(--display); font-size: 20px; text-transform: uppercase; padding: 0 8px; }
+.dv-side label { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
+.dv-side input[type=text], .dv-side input[type=number], .dv-side input[type=date], .dv-side textarea { width: 100%; font: inherit; font-weight: 400; font-size: 16px; padding: 9px 11px; color: var(--fg); background: var(--bg); border: 1.5px solid var(--line); border-radius: 0; }
+.dv-side textarea { resize: vertical; }
+.dv-line { display: grid; grid-template-columns: minmax(0, 1fr) 96px 40px; gap: 8px; }
+.dv-line button { font: inherit; cursor: pointer; border: 1.5px solid var(--fg); background: var(--bg); color: var(--fg); }
+.dv-side .btn { justify-self: start; }
+.dv-check { display: flex !important; align-items: center; gap: 8px; font-weight: 500 !important; }
+.dv-check input { width: 18px; height: 18px; }
+.pad { display: grid; gap: 6px; }
+.pad canvas { width: 100%; height: 150px; background: #fff; border: 2px dashed var(--fg); touch-action: none; cursor: crosshair; }
+.pad-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.pad-row button { font: inherit; font-size: 13px; cursor: pointer; background: none; border: 0; text-decoration: underline; color: var(--fg); }
+.sig-saved { background: #fff; border: 2px solid var(--fg); padding: 8px; display: grid; gap: 6px; }
+.sig-saved img { max-height: 90px; justify-self: start; }
+.dv-paper { background: #fff; color: #111; border: 2px solid var(--fg); box-shadow: 8px 8px 0 var(--fg); padding: clamp(18px, 4vw, 40px); display: grid; gap: 22px; font-size: 15px; }
+.dv-top { display: flex; justify-content: space-between; align-items: start; gap: 16px; flex-wrap: wrap; border-bottom: 3px solid #111; padding-bottom: 16px; }
+.dv-brand { font-family: var(--display); font-size: 34px; line-height: .9; text-transform: uppercase; }
+.dv-brand small { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: #555; margin-top: 6px; }
+.dv-num { text-align: right; font-family: var(--mono); font-size: 13px; display: grid; gap: 2px; }
+.dv-num b { font-family: var(--display); font-weight: 400; font-size: 28px; }
+.dv-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.dv-parties div { display: grid; gap: 2px; }
+.dv-parties small, .dv-meta small { font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: #555; letter-spacing: .06em; }
+.dv-table { width: 100%; border-collapse: collapse; }
+.dv-table th { text-align: left; font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: #555; border-bottom: 2px solid #111; padding: 8px 0; }
+.dv-table td { border-bottom: 1px solid #ccc; padding: 10px 0; vertical-align: top; }
+.dv-table td:last-child, .dv-table th:last-child { text-align: right; white-space: nowrap; }
+.dv-table tfoot td { border: 0; font-family: var(--display); font-size: 26px; padding-top: 14px; }
+.dv-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.dv-meta div { border: 2px solid #111; padding: 10px 12px; display: grid; gap: 2px; }
+.dv-meta b { font-size: 17px; }
+.dv-note { margin: 0; white-space: pre-wrap; color: #333; }
+.dv-signs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.dv-signs div { border: 2px solid #111; padding: 10px 12px; min-height: 130px; display: grid; align-content: start; gap: 6px; }
+.dv-signs img { max-width: 100%; max-height: 90px; }
+.dv-signs em { font-style: normal; color: #888; }
+.dv-stamp { justify-self: start; font-family: var(--mono); font-size: 12px; text-transform: uppercase; border: 2px solid #111; padding: 4px 10px; transform: rotate(-2deg); }
+.dv-legal { margin: 0; font-size: 12px; color: #666; }
+@media (max-width: 520px) { .dv-parties, .dv-signs { grid-template-columns: 1fr; } }
+@media print {
+  body * { visibility: hidden !important; }
+  #dv-doc, #dv-doc * { visibility: visible !important; }
+  #dv-doc { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: 0; }
+  .modal { position: static; background: none; }
+  @page { margin: 14mm; }
+}
+
+/* Conversation : messages du site et problèmes */
+.msg.sys { justify-self: center; max-width: 92%; background: color-mix(in srgb, var(--fg) 10%, var(--bg)); color: var(--muted); border-color: transparent; text-align: center; }
+.msg.sys p { color: var(--fg); font-weight: 600; }
+.msg.sys .btn { justify-self: center; margin-top: 4px; padding: 6px 12px; font-size: 14px; }
+.msg.probleme { border-width: 3px; }
+.msg.probleme::before { content: "🚨 Problème signalé"; font-family: var(--mono); font-size: 11px; text-transform: uppercase; }
+.chat-help { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1.5px solid var(--line); font-size: 14px; color: var(--muted); }
+.chat-help button { font: inherit; font-weight: 700; cursor: pointer; padding: 6px 12px; background: var(--bg); color: var(--fg); border: 2px solid var(--fg); }
+.chip-btn[disabled] { opacity: .4; cursor: not-allowed; }
+
+/* Compteur de sites */
+.sites-done { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 24px; padding: 14px 18px; border: 2px solid var(--fg); background: var(--card); text-align: center; }
+.sites-done b { font-family: var(--display); font-weight: 400; font-size: clamp(44px, 8vw, 72px); line-height: .9; font-variant-numeric: tabular-nums; }
+.sites-done span { font-family: var(--display); font-size: clamp(20px, 3.4vw, 30px); text-transform: uppercase; line-height: 1; text-align: left; }
+.sites-done span small { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--muted); margin-top: 6px; }
+
+/* Photo de profil */
+.me-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 4px 0 14px; }
+.avatar-pic { width: 72px; height: 72px; border-radius: 50%; border: 3px solid var(--fg); object-fit: cover; background: var(--card); display: grid; place-items: center; font-family: var(--display); font-size: 30px; overflow: hidden; flex: none; }
+.avatar-pic img { width: 100%; height: 100%; object-fit: cover; }
+.me-row .hello { margin: 0; }
+.me-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.me-actions .btn { padding: 6px 12px; font-size: 14px; }
+.account-btn { display: inline-flex; align-items: center; gap: 8px; }
+.account-btn .mini { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1.5px solid currentColor; }
+.card-head .who-pic { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--fg); }
+.flag { font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 3px 8px; border: 2px solid var(--fg); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 
@@ -454,6 +551,7 @@ html, body { overflow-x: clip; }
 </div>
 
 <main class="wrap">
+  <div class="sites-done" id="sites-done" hidden><b id="sites-n">0</b><span>sites déjà créés<small>Le compteur monte à chaque site livré</small></span></div>
   <div class="timer" id="timer" hidden aria-live="polite">
     <div class="timer-txt"><small><i></i>Minuteur</small><b id="t-title"></b><p id="t-desc" hidden></p></div>
     <div class="timer-clock" id="t-clock">
@@ -612,6 +710,39 @@ html, body { overflow-x: clip; }
   </div>
 
 
+  <div class="modal" id="devis" hidden role="dialog" aria-modal="true" aria-labelledby="dv-title">
+   <div class="modal-box">
+    <div class="modal-head no-print">
+      <h2 id="dv-title"><small id="dv-sub">Devis</small><span id="dv-head">Devis</span></h2>
+      <button class="close" type="button" data-close aria-label="Fermer le devis">✕</button>
+    </div>
+    <div class="dv-wrap">
+      <div class="dv-side no-print" id="dv-side"></div>
+      <div class="dv-paper" id="dv-doc"></div>
+    </div>
+   </div>
+  </div>
+
+  <div class="modal" id="chat" hidden role="dialog" aria-modal="true" aria-labelledby="chat-title">
+   <div class="modal-box small">
+    <div class="modal-head">
+      <h2 id="chat-title"><small id="chat-sub">Discussion</small><span id="chat-name">Messages</span></h2>
+      <button class="close" type="button" data-close aria-label="Fermer la discussion">✕</button>
+    </div>
+    <div class="chat-modes" id="chat-modes">
+      <button class="chip-btn on" type="button" data-kind="msg">💬 Message</button>
+      <button class="chip-btn" type="button" data-kind="modif">✏️ Demander une modification</button>
+      <button class="chip-btn" type="button" data-kind="probleme">🚨 Problème</button>
+    </div>
+    <div class="chat-list" id="chat-list" aria-live="polite"></div>
+    <form class="chat-form" id="chat-form" novalidate>
+      <textarea id="chat-text" rows="2" maxlength="2000" placeholder="Écris ton message…" aria-label="Ton message"></textarea>
+      <button class="btn main" type="submit">Envoyer</button>
+    </form>
+    <div class="chat-help" id="chat-help"><span>Un problème avec ta commande ou ton site ?</span><button type="button" id="chat-problem">🚨 Contacter le staff</button></div>
+   </div>
+  </div>
+
   <div class="modal" id="paym" hidden role="dialog" aria-modal="true" aria-labelledby="pay-title">
    <div class="modal-box small">
     <div class="modal-head">
@@ -668,7 +799,17 @@ html, body { overflow-x: clip; }
       </form>
     </div>
     <div id="acc-in" hidden>
-      <p class="hello">Connecté en tant que <b id="acc-name"></b></p>
+      <div class="me-row">
+        <span class="avatar-pic" id="acc-pic"></span>
+        <div style="display:grid;gap:8px">
+          <p class="hello">Connecté en tant que <b id="acc-name"></b></p>
+          <div class="me-actions">
+            <button class="btn" type="button" id="pic-change">📷 Changer ma photo</button>
+            <button class="btn" type="button" id="pic-remove" hidden>Retirer</button>
+            <input type="file" id="pic-file" accept="image/*" hidden>
+          </div>
+        </div>
+      </div>
       <div class="acc-actions">
         <button class="btn main" type="button" id="acc-new">Nouvelle demande</button>
         <button class="btn" type="button" id="acc-admin" hidden>Espace admin</button>
@@ -796,6 +937,7 @@ html, body { overflow-x: clip; }
             <label for="st-yt">Abonnés YouTube<input id="st-yt" type="number" min="0" step="1" placeholder="Automatique"></label>
             <label for="st-goal">Objectif TikTok<input id="st-goal" type="number" min="1" step="1" placeholder="7000"></label>
           </div>
+          <label for="st-sites">Sites déjà faits avant ce site (ajoutés au compteur)<input id="st-sites" type="number" min="0" step="1" placeholder="0"></label>
           <p class="hint" id="st-info">Le site lit tes abonnés tout seul toutes les 10 minutes. Si TikTok bloque la lecture, c'est le chiffre que tu mets ici qui s'affiche.</p>
         </fieldset>
         <p class="q-err" id="st-err" hidden></p>
@@ -851,8 +993,9 @@ const fmt = n => n.toLocaleString("fr-FR");
 // compteurs : chiffres de départ, puis les vrais chiffres lus par le serveur (mis à jour toutes les 10 min)
 const shown = {};
 function countTo(el, target) {
-  const from = shown[el.dataset.key] || 0;
-  shown[el.dataset.key] = target;
+  const key = el.dataset.key || el.id;
+  const from = shown[key] || 0;
+  shown[key] = target;
   if (reduceMotion || Math.abs(target - from) < 3) { el.textContent = fmt(target); return; }
   const start = performance.now();
   const tick = now => {
@@ -1006,7 +1149,7 @@ const mock = (() => {
     await new Promise(r => setTimeout(r, 200));
     const u = who(d.token);
     switch (action) {
-      case "config": return { paypalClientId: null, price: db.price, examples: db.examples, timer: db.timer && db.timer.active ? db.timer : null, google: true, apple: true, discord: true };
+      case "config": return { sitesDone: db.orders.filter(o => o.status === "terminée" && o.siteUrl).length + (db.sitesBase || 0), adminAvatar: db.adminAvatar || null, paypalClientId: null, price: db.price, examples: db.examples, timer: db.timer && db.timer.active ? db.timer : null, google: true, apple: true, discord: true };
       case "register": {
         const pseudo = (d.pseudo || "").trim();
         if (!/^[\w.-]{3,20}$/.test(pseudo)) throw new Error("Pseudo : 3 à 20 caractères (lettres, chiffres, _ . -).");
@@ -1050,13 +1193,33 @@ const mock = (() => {
       }
       case "payCreate": need(u); findOrder(u, d.orderId); return { paypalId: "SIMULATION" };
       case "payCapture": { need(u); const o = findOrder(u, d.orderId); if (o.status !== "payée") markPaid(o); return { order: o }; }
+      case "avatarSave": { need(u); if (u.admin) db.adminAvatar = d.img; else db.users[u.pseudo.toLowerCase()].avatar = d.img; return { avatar: d.img || null }; }
+      case "signatureSave": need(u, true); db.signature = d.sign; return { ok: true };
+      case "quoteSave": {
+        need(u, true); const o = findOrder(u, d.orderId);
+        if (o.quote && o.quote.signedAt) throw new Error("Ce devis est déjà signé par le client : il ne peut plus être modifié.");
+        const total = d.items.reduce((t, x) => t + Number(x.price || 0), 0);
+        o.quote = { items: d.items.map(x => ({ label: x.label, price: Number(x.price) })), total, deadline: d.deadline, note: d.note, adminSign: d.sign || db.signature, number: "D-" + o.ref, createdAt: new Date().toISOString() };
+        o.messages = (o.messages || []).concat({ from: "system", text: "📝 Devis envoyé : " + euro(total) + ". Ouvre-le et signe-le pour valider ta commande.", quote: true, at: new Date().toISOString() });
+        o.unreadClient = (o.unreadClient || 0) + 1;
+        return { order: o };
+      }
+      case "quoteSign": {
+        need(u); const o = findOrder(u, d.orderId);
+        Object.assign(o.quote, { clientSign: d.sign, clientName: d.name, signedAt: new Date().toISOString() });
+        o.locked = true; if (o.status === "en attente") { o.total = o.quote.total; o.price = o.quote.total; }
+        o.messages = (o.messages || []).concat({ from: "system", text: "✅ Devis signé par " + d.name + ". La commande est validée et ne peut plus être modifiée.", at: new Date().toISOString() });
+        return { order: o };
+      }
+      case "chatGet": { need(u); const o = findOrder(u, d.orderId); if (u.admin) o.unreadAdmin = 0; else o.unreadClient = 0; return { messages: o.messages || [] }; }
+      case "chatSend": { need(u); const o = findOrder(u, d.orderId); if (!u.admin && d.kind === "modif" && o.locked && o.status !== "terminée") throw new Error("Ton devis est signé : la commande ne peut plus être modifiée avant la livraison du site."); if (d.kind === "probleme") o.problem = true; o.messages = (o.messages || []).concat({ from: u.admin ? "admin" : "client", text: d.text, kind: d.kind, at: new Date().toISOString() }); if (u.admin) o.unreadClient = (o.unreadClient || 0) + 1; else o.unreadAdmin = (o.unreadAdmin || 0) + 1; return { messages: o.messages }; }
       case "payProof": { need(u); const o = findOrder(u, d.orderId); o.proof = { paypal: d.paypal, at: new Date().toISOString() }; o.status = "à vérifier"; db.proofs = db.proofs || {}; db.proofs[o.id] = d.img; return { order: o }; }
       case "proofGet": need(u, true); return { img: (db.proofs || {})[d.orderId] || null };
       case "payCancel": { need(u); const o = findOrder(u, d.orderId); if (o.status !== "payée") o.status = "annulée"; return { order: o }; }
       case "adminData": {
         need(u, true);
         const users = Object.values(db.users).map(x => ({ ...x, orders: db.orders.filter(o => o.user === x.pseudo).length }));
-        return { orders: db.orders.slice().reverse(), coupons: Object.values(db.coupons), users, price: db.price, examples: db.examples, stats: db.stats, timer: db.timer || null };
+        return { orders: db.orders.slice().reverse(), coupons: Object.values(db.coupons), users, price: db.price, examples: db.examples, stats: db.stats, timer: db.timer || null, sitesBase: db.sitesBase || 0, signature: db.signature || null };
       }
       case "couponSave": {
         need(u, true);
@@ -1075,6 +1238,7 @@ const mock = (() => {
         const o = findOrder(u, d.orderId);
         o.status = d.status;
         if ((d.status === "payée" || d.status === "terminée") && !o.paidAt) { markPaid(o); o.status = d.status; }
+        if (d.status === "terminée" && d.siteUrl && d.siteUrl !== o.siteUrl) { o.messages = (o.messages || []).concat({ from: "system", text: "🎉 Voici votre site !", url: d.siteUrl, at: new Date().toISOString() }); o.unreadClient = (o.unreadClient || 0) + 1; }
         if (d.status === "terminée") { o.doneAt = o.doneAt || new Date().toISOString(); if (d.siteUrl !== undefined) o.siteUrl = d.siteUrl || null; }
         return { order: o };
       }
@@ -1088,7 +1252,7 @@ const mock = (() => {
         return { price };
       }
       case "stats": return { tiktok: db.stats ? db.stats.tiktok : null, youtube: db.stats ? db.stats.youtube : null, goal: db.stats ? db.stats.goal : 7000, live: { tiktok: false, youtube: false } };
-      case "statsSave": need(u, true); db.stats = { tiktok: d.tiktok ? +d.tiktok : null, youtube: d.youtube ? +d.youtube : null, goal: +d.goal || 7000 }; return { stats: db.stats };
+      case "statsSave": need(u, true); db.sitesBase = Number(d.sitesBase) || 0; db.stats = { tiktok: d.tiktok ? +d.tiktok : null, youtube: d.youtube ? +d.youtube : null, goal: +d.goal || 7000 }; return { stats: db.stats };
       case "recent": return { paid: db.orders.filter(o => o.paidAt).slice(-5).reverse().map(o => ({ name: o.name || o.user, at: o.paidAt })) };
       case "timerSave": {
         need(u, true);
@@ -1132,6 +1296,8 @@ function showModal(id, opener) {
 }
 function hideModal() {
   if (!openModal) return;
+  if (openModal.id === "devis") { quoteDraft = null; openModal.hidden = true; openModal = null; document.body.style.overflow = ""; if (session && session.admin) { showModal("admin"); loadAdmin(); } else openAccount(); return; }
+  if (openModal.id === "chat") { clearInterval(chatPoll); const back = session && session.admin ? "admin" : "account"; openModal.hidden = true; openModal = null; document.body.style.overflow = ""; if (back === "admin") { showModal("admin"); loadAdmin(); } else openAccount(); return; }
   openModal.hidden = true;
   openModal = null;
   document.body.style.overflow = "";
@@ -1159,7 +1325,10 @@ tabs($("admin"), "data-panel");
 let afterLogin = null;
 
 function refreshWho() {
-  $("account-btn").textContent = session ? session.pseudo : "Se connecter / Créer un compte";
+  const ab = $("account-btn");
+  ab.replaceChildren();
+  if (session && session.avatar) { const im = el("img", "mini"); im.src = session.avatar; im.alt = ""; ab.append(im); }
+  ab.append(session ? session.pseudo : "Se connecter / Créer un compte");
   const who = $("q-who");
   who.replaceChildren();
   if (session) who.append("Demande envoyée avec le compte ", el("b", null, session.pseudo), ".");
@@ -1193,6 +1362,7 @@ async function openAccount(message, opener, tab) {
   showModal("account", opener);
   if (!session) { setupSocial(); return; }
   $("acc-name").textContent = session.pseudo;
+  showPic();
   $("acc-admin").hidden = !session.admin;
   $("acc-new").hidden = !!session.admin;
   const list = $("acc-orders");
@@ -1228,9 +1398,23 @@ function renderMyOrders(orders) {
       card.append(actions);
     }
     if (o.status === "à vérifier") card.append(el("p", "who proof-note", "Preuve de paiement envoyée, en cours de vérification."));
+    if (o.quote) {
+      const qa = el("div", "card-actions");
+      const qb = button(o.quote.signedAt ? "📝 Mon devis (signé ✓)" : "📝 Voir et signer le devis", () => openQuote(o), o.quote.signedAt ? "btn" : "btn main");
+      qa.append(qb);
+      if (o.quote.signedAt) qa.append(el("span", "meta", "Livraison prévue le " + new Date(o.quote.deadline).toLocaleDateString("fr-FR")));
+      card.append(qa);
+    }
+    const talk = el("div", "card-actions");
+    const chatBtn = button("💬 Discuter avec EXOTIQUELEO", () => openChat(o, "msg"), o.unreadClient ? "btn main" : "btn");
+    if (o.unreadClient) chatBtn.append(el("span", "badge", o.unreadClient));
+    talk.append(chatBtn);
+    if ((o.status === "terminée" || o.status === "payée") && !(o.locked && o.status !== "terminée")) talk.append(button("✏️ Demander une modification", () => openChat(o, "modif")));
+    card.append(talk);
     if (o.status === "en attente" || o.status === "annulée") {
       const actions = el("div", "card-actions");
-      actions.append(button(o.status === "annulée" ? "Réessayer le paiement" : "Payer", () => openPay(o), "btn main"));
+      if (o.quote && !o.quote.signedAt) actions.append(el("span", "meta", "Signe le devis pour pouvoir payer."));
+      else actions.append(button(o.status === "annulée" ? "Réessayer le paiement" : "Payer", () => openPay(o), "btn main"));
       card.append(actions);
     }
     list.append(card);
@@ -1238,8 +1422,9 @@ function renderMyOrders(orders) {
 }
 
 async function finishLogin(res) {
-  setSession({ token: res.token, pseudo: res.user.pseudo, admin: !!res.user.admin });
+  setSession({ token: res.token, pseudo: res.user.pseudo, admin: !!res.user.admin, avatar: res.user.avatar || null });
   toast("Salut " + res.user.pseudo + " !");
+  api("me").then(r => { if (r.user && r.user.avatar !== undefined) { setSession({ ...session, avatar: r.user.avatar }); } }).catch(() => {});
   const next = afterLogin;
   afterLogin = null;
   if (next) return next();
@@ -1524,6 +1709,11 @@ async function openPay(order) {
   note("pay-msg", null);
   $("pay-buttons").replaceChildren();
   showModal("paym");
+  if (order.quote && !order.quote.signedAt) {
+    note("pay-msg", "Signe d'abord le devis, puis tu pourras payer.", "bad");
+    $("pay-buttons").append(button("📝 Ouvrir le devis", () => openQuote(order), "btn main"));
+    return;
+  }
   if (order.status === "payée" || order.status === "terminée") {
     note("pay-msg", order.total === 0 ? "Ta demande est gratuite grâce à ton code promo : tu n'as rien à payer. Elle est validée, je te réponds en DM sur Discord." : "Cette demande est déjà payée.", "ok");
     return;
@@ -1644,7 +1834,7 @@ function renderAdmin() {
   const paidOrders = orders.filter(o => o.status === "payée" || o.status === "terminée");
   const stats = $("ad-stats");
   stats.replaceChildren();
-  [[users.length, "comptes"], [orders.length, "demandes"], [orders.filter(o => o.status === "à vérifier").length, "à vérifier"], [orders.filter(o => o.status === "payée").length, "à faire"], [orders.filter(o => o.status === "terminée").length, "faites"], [euro(paidOrders.reduce((s, o) => s + o.total, 0)), "encaissé"]]
+  [[users.length, "comptes"], [orders.length, "demandes"], [orders.filter(o => o.status === "à vérifier").length, "à vérifier"], [orders.reduce((n, o) => n + (o.unreadAdmin || 0), 0), "messages non lus"], [orders.filter(o => o.status === "payée").length, "à faire"], [orders.filter(o => o.status === "terminée").length, "faites"], [euro(paidOrders.reduce((s, o) => s + o.total, 0)), "encaissé"]]
     .forEach(([n, l]) => { const d = el("div"); d.append(el("b", null, n), el("span", null, l)); stats.append(d); });
   renderAdminOrders();
   renderDone();
@@ -1653,7 +1843,7 @@ function renderAdmin() {
   if (typeof adminData.price === "number") { setPrice(adminData.price); $("s-price").value = adminData.price; }
   fillTimerForm(adminData.timer || null);
   const st = adminData.stats || {};
-  $("st-tt").value = st.tiktok ?? ""; $("st-yt").value = st.youtube ?? ""; $("st-goal").value = st.goal ?? "";
+  $("st-tt").value = st.tiktok ?? ""; $("st-yt").value = st.youtube ?? ""; $("st-goal").value = st.goal ?? ""; $("st-sites").value = adminData.sitesBase || "";
   if (ONLINE) api("stats").then(r => {
     $("st-info").textContent = "Lecture automatique : TikTok " + (r.live.tiktok ? "✓ " + fmt(r.tiktok) : "bloquée, c'est ton chiffre qui s'affiche") + " · YouTube " + (r.live.youtube ? "✓ " + fmt(r.youtube) : "bloquée, c'est ton chiffre qui s'affiche") + ".";
   }).catch(() => {});
@@ -1692,6 +1882,10 @@ function renderAdminOrders() {
       catch (err) { toast(err.message); sel.value = o.status; }
     });
     actions.append(sel);
+    const chatBtn = button("💬 Discuter", () => openChat(o, "msg"), o.unreadAdmin ? "btn main" : "btn");
+    if (o.unreadAdmin) chatBtn.append(el("span", "badge", o.unreadAdmin));
+    actions.append(chatBtn, button(o.quote ? (o.quote.signedAt ? "📝 Devis signé ✓" : "📝 Modifier le devis") : "📝 Faire le devis", () => openQuote(o)));
+    if (o.problem) head.append(el("span", "flag", "🚨 Problème signalé"));
     if (o.status === "à vérifier") {
       actions.append(
         button("✓ Valider le paiement", async () => {
@@ -1987,7 +2181,7 @@ $("f-stats").addEventListener("submit", async e => {
   e.preventDefault();
   $("st-err").hidden = true;
   try {
-    const { stats } = await api("statsSave", { tiktok: $("st-tt").value, youtube: $("st-yt").value, goal: $("st-goal").value });
+    const { stats } = await api("statsSave", { tiktok: $("st-tt").value, youtube: $("st-yt").value, goal: $("st-goal").value, sitesBase: $("st-sites").value });
     adminData.stats = stats;
     await loadStats();
     toast("Compteurs enregistrés");
@@ -2009,6 +2203,347 @@ $("f-adpass").addEventListener("submit", async e => {
     $("p-err").hidden = false;
   }
 });
+
+// ---------- Signature au doigt ou à la souris ----------
+function makePad(label) {
+  const wrap = el("div", "pad");
+  const c = el("canvas");
+  c.setAttribute("aria-label", label);
+  const row = el("div", "pad-row");
+  const clear = el("button", null, "Effacer");
+  clear.type = "button";
+  row.append(el("span", null, label), clear);
+  wrap.append(c, row);
+  let ctx, drawing = false, empty = true, last = null;
+  const fit = () => {
+    const r = c.getBoundingClientRect();
+    if (!r.width) return;
+    const keep = empty ? null : c.toDataURL();
+    c.width = r.width * 2; c.height = r.height * 2;
+    ctx = c.getContext("2d");
+    ctx.scale(2, 2); ctx.lineWidth = 2.6; ctx.lineCap = ctx.lineJoin = "round"; ctx.strokeStyle = "#111";
+    if (keep) { const im = new Image(); im.onload = () => ctx.drawImage(im, 0, 0, r.width, r.height); im.src = keep; }
+  };
+  const pos = e => { const r = c.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  c.addEventListener("pointerdown", e => { if (!ctx) fit(); drawing = true; last = pos(e); c.setPointerCapture(e.pointerId); });
+  c.addEventListener("pointermove", e => {
+    if (!drawing) return;
+    const p = pos(e);
+    ctx.beginPath(); ctx.moveTo(...last); ctx.lineTo(...p); ctx.stroke();
+    last = p; empty = false;
+  });
+  const stop = () => { drawing = false; };
+  c.addEventListener("pointerup", stop);
+  c.addEventListener("pointercancel", stop);
+  clear.addEventListener("click", () => { if (ctx) ctx.clearRect(0, 0, c.width, c.height); empty = true; });
+  requestAnimationFrame(fit);
+  return { el: wrap, isEmpty: () => empty, data: () => c.toDataURL("image/png") };
+}
+
+// ---------- Devis ----------
+let quoteOrder = null;
+const dateFr = d => new Date(d).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+
+function quoteDoc(o, draft) {
+  const q = draft || o.quote;
+  const doc = $("dv-doc");
+  doc.replaceChildren();
+  const top = el("div", "dv-top");
+  const brand = el("div", "dv-brand", "EXOTIQUELEO");
+  brand.append(el("small", null, "Création de sites internet · Discord exotiqueleo_levrai"));
+  const num = el("div", "dv-num");
+  num.append(el("b", null, "DEVIS"), el("span", null, "N° " + (q.number || "D-" + o.ref)), el("span", null, "Le " + dateFr(q.createdAt || new Date())));
+  top.append(brand, num);
+  const parties = el("div", "dv-parties");
+  const a = el("div"); a.append(el("small", null, "Prestataire"), el("b", null, "EXOTIQUELEO"), el("span", null, "TikTok @exotiqueleo"));
+  const b = el("div"); b.append(el("small", null, "Client"), el("b", null, o.name || o.user), el("span", null, "Compte : " + o.user), el("span", null, "Discord : " + (o.discord || "?")));
+  parties.append(a, b);
+  const table = el("table", "dv-table");
+  const thead = el("thead"); const hr = el("tr"); hr.append(el("th", null, "Description"), el("th", null, "Prix")); thead.append(hr);
+  const tbody = el("tbody");
+  (q.items || []).forEach(x => { const tr = el("tr"); tr.append(el("td", null, x.label || "—"), el("td", null, euro(Number(x.price) || 0))); tbody.append(tr); });
+  const total = (q.items || []).reduce((t, x) => t + (Number(x.price) || 0), 0);
+  const tfoot = el("tfoot"); const fr = el("tr"); fr.append(el("td", null, "Total"), el("td", null, euro(total))); tfoot.append(fr);
+  table.append(thead, tbody, tfoot);
+  const meta = el("div", "dv-meta");
+  const m1 = el("div"); m1.append(el("small", null, "Livraison du site"), el("b", null, q.deadline ? "Le " + dateFr(q.deadline) : "À définir"));
+  const m2 = el("div"); m2.append(el("small", null, "Demande"), el("b", null, "N° " + o.ref));
+  const m3 = el("div"); m3.append(el("small", null, "Paiement"), el("b", null, "PayPal"));
+  meta.append(m1, m2, m3);
+  doc.append(top, parties, table, meta);
+  if (q.note) doc.append(el("p", "dv-note", q.note));
+  const signs = el("div", "dv-signs");
+  const s1 = el("div"); s1.append(el("small", null, "Signature EXOTIQUELEO"));
+  if (q.adminSign) { const im = el("img"); im.src = q.adminSign; im.alt = "Signature d'EXOTIQUELEO"; s1.append(im); } else s1.append(el("em", null, "Signature à ajouter"));
+  const s2 = el("div"); s2.append(el("small", null, "Bon pour accord · signature du client"));
+  if (q.clientSign) { const im = el("img"); im.src = q.clientSign; im.alt = "Signature du client"; s2.append(im, el("span", null, q.clientName + " · le " + dateFr(q.signedAt))); }
+  else s2.append(el("em", null, "Pas encore signé"));
+  signs.append(s1, s2);
+  doc.append(signs);
+  if (q.signedAt) doc.append(el("span", "dv-stamp", "✓ Signé · commande validée"));
+  doc.append(el("p", "dv-legal", "Une fois signé, ce devis vaut accord : le contenu de la commande ne peut plus être modifié avant la livraison. Après la livraison, les demandes de modification se font dans la discussion."));
+}
+
+function quoteHeader(o) {
+  $("dv-sub").textContent = "Demande n° " + o.ref;
+  $("dv-head").textContent = o.quote ? (o.quote.signedAt ? "Devis signé" : session.admin ? "Modifier le devis" : "Ton devis") : "Faire le devis";
+}
+
+function printBtn() {
+  return button("🖨️ Imprimer / Enregistrer en PDF", () => window.print());
+}
+
+function openQuote(o) {
+  quoteOrder = o;
+  quoteHeader(o);
+  const side = $("dv-side");
+  side.replaceChildren();
+  $("dv-side").parentElement.classList.remove("full");
+  if (session.admin && !(o.quote && o.quote.signedAt)) quoteEditor(o, side);
+  else if (!session.admin && o.quote && !o.quote.signedAt) quoteSigner(o, side);
+  else {
+    if (!o.quote) { toast("Pas encore de devis pour cette demande."); return; }
+    side.append(printBtn());
+    if (!session.admin && o.status === "en attente") side.append(button("💳 Payer ma demande", () => openPay(o), "btn main"));
+  }
+  quoteDoc(o, o.quote && !session.admin ? null : quoteDraft);
+  showModal("devis");
+}
+
+let quoteDraft = null;
+function quoteEditor(o, side) {
+  const q = o.quote || {};
+  const items = q.items ? q.items.map(x => ({ ...x })) : [{ label: "Site internet complet à ton image", price: o.price || BASE_PRICE }];
+  quoteDraft = { items, deadline: q.deadline || "", note: q.note || "", adminSign: q.adminSign || (adminData && adminData.signature) || "", createdAt: q.createdAt, number: q.number };
+  const refresh = () => quoteDoc(o, quoteDraft);
+
+  const f1 = el("fieldset"); f1.append(el("legend", null, "Lignes du devis"));
+  const lines = el("div"); lines.style.cssText = "display:grid;gap:8px";
+  const drawLines = () => {
+    lines.replaceChildren();
+    items.forEach((x, i) => {
+      const r = el("div", "dv-line");
+      const l = el("input"); l.type = "text"; l.value = x.label; l.placeholder = "Ex : Section vidéos"; l.setAttribute("aria-label", "Description");
+      const pz = el("input"); pz.type = "number"; pz.step = "0.5"; pz.min = "0"; pz.value = x.price; pz.setAttribute("aria-label", "Prix en euros");
+      const del = el("button", null, "✕"); del.type = "button"; del.setAttribute("aria-label", "Supprimer la ligne");
+      l.addEventListener("input", () => { x.label = l.value; refresh(); });
+      pz.addEventListener("input", () => { x.price = pz.value; refresh(); });
+      del.addEventListener("click", () => { if (items.length > 1) { items.splice(i, 1); drawLines(); refresh(); } });
+      r.append(l, pz, del);
+      lines.append(r);
+    });
+  };
+  drawLines();
+  f1.append(lines, button("+ Ajouter une ligne", () => { items.push({ label: "", price: 0 }); drawLines(); refresh(); }));
+
+  const f2 = el("fieldset"); f2.append(el("legend", null, "Délai et note"));
+  const dl = el("label", null, "Le client aura son site le"); const di = el("input"); di.type = "date"; di.value = quoteDraft.deadline; dl.append(di);
+  di.addEventListener("input", () => { quoteDraft.deadline = di.value; refresh(); });
+  const nl = el("label", null, "Note (facultatif)"); const ni = el("textarea"); ni.rows = 3; ni.value = quoteDraft.note; ni.placeholder = "Ex : 2 modifications gratuites après la livraison."; nl.append(ni);
+  ni.addEventListener("input", () => { quoteDraft.note = ni.value; refresh(); });
+  f2.append(dl, nl);
+
+  const f3 = el("fieldset"); f3.append(el("legend", null, "Ma signature"));
+  let pad = null;
+  const keep = el("label", "dv-check"); const kc = el("input"); kc.type = "checkbox"; kc.checked = true; keep.append(kc, "Garder cette signature pour mes prochains devis");
+  const drawSig = () => {
+    f3.replaceChildren(el("legend", null, "Ma signature"));
+    if (quoteDraft.adminSign && !pad) {
+      const box = el("div", "sig-saved"); const im = el("img"); im.src = quoteDraft.adminSign; im.alt = "Ta signature";
+      box.append(im, button("Redessiner ma signature", () => { pad = makePad("Signe dans le cadre"); drawSig(); }));
+      f3.append(box);
+    } else {
+      pad = pad || makePad("Signe dans le cadre");
+      f3.append(pad.el, keep);
+    }
+  };
+  drawSig();
+
+  const err = el("p", "q-err"); err.hidden = true;
+  const send = button(o.quote ? "Mettre à jour le devis" : "Envoyer le devis au client", async () => {
+    err.hidden = true;
+    try {
+      let sign = quoteDraft.adminSign;
+      if (pad) {
+        if (pad.isEmpty()) throw new Error("Signe dans le cadre.");
+        sign = pad.data();
+        if (kc.checked) { await api("signatureSave", { sign }); if (adminData) adminData.signature = sign; }
+      }
+      if (!quoteDraft.deadline) throw new Error("Choisis la date de livraison du site.");
+      send.disabled = true;
+      const { order } = await api("quoteSave", { orderId: o.id, items, deadline: quoteDraft.deadline, note: quoteDraft.note, sign });
+      Object.assign(o, order);
+      quoteDraft = null;
+      toast("Devis envoyé au client");
+      openQuote(o);
+    } catch (x) { err.textContent = x.message; err.hidden = false; send.disabled = false; }
+  }, "btn main");
+  side.append(f1, f2, f3, err, send, printBtn());
+}
+
+function quoteSigner(o, side) {
+  quoteDraft = null;
+  const f = el("fieldset"); f.append(el("legend", null, "Signer le devis"));
+  f.append(el("p", "who", "Lis bien le devis. En le signant, tu valides la commande : elle ne pourra plus être modifiée avant la livraison."));
+  const nl = el("label", null, "Ton nom"); const ni = el("input"); ni.type = "text"; ni.value = o.name || ""; ni.placeholder = "Ex : Zaytos"; nl.append(ni);
+  const pad = makePad("Signe dans le cadre avec ton doigt ou ta souris");
+  const ok = el("label", "dv-check"); const oc = el("input"); oc.type = "checkbox"; ok.append(oc, "J'ai lu le devis et je l'accepte");
+  const err = el("p", "q-err"); err.hidden = true;
+  const btn = button("✍️ Signer le devis", async () => {
+    err.hidden = true;
+    try {
+      if (!ni.value.trim()) throw new Error("Écris ton nom.");
+      if (pad.isEmpty()) throw new Error("Signe dans le cadre.");
+      if (!oc.checked) throw new Error("Coche « J'ai lu le devis et je l'accepte ».");
+      btn.disabled = true;
+      const { order } = await api("quoteSign", { orderId: o.id, name: ni.value.trim(), sign: pad.data() });
+      Object.assign(o, order);
+      toast("Devis signé !");
+      openQuote(o);
+    } catch (x) { err.textContent = x.message; err.hidden = false; btn.disabled = false; }
+  }, "btn main");
+  f.append(nl, pad.el, ok);
+  side.append(f, err, btn, printBtn());
+}
+
+// ---------- Photo de profil ----------
+function showPic() {
+  const box = $("acc-pic");
+  box.replaceChildren();
+  if (session && session.avatar) { const im = el("img"); im.src = session.avatar; im.alt = "Ta photo de profil"; box.append(im); }
+  else box.textContent = session ? session.pseudo[0].toUpperCase() : "?";
+  $("pic-remove").hidden = !(session && session.avatar);
+}
+function squareImage(file, size = 256) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const side = Math.min(img.width, img.height);
+      const c = document.createElement("canvas");
+      c.width = c.height = size;
+      c.getContext("2d").drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, size, size);
+      URL.revokeObjectURL(img.src);
+      resolve(c.toDataURL("image/jpeg", .85));
+    };
+    img.onerror = () => reject(new Error("Cette image ne peut pas être lue."));
+    img.src = URL.createObjectURL(file);
+  });
+}
+async function savePic(img) {
+  try {
+    const { avatar } = await api("avatarSave", { img });
+    setSession({ ...session, avatar });
+    showPic();
+    applyAdminPic(session.admin ? avatar : undefined);
+    toast(avatar ? "Photo de profil changée" : "Photo retirée");
+  } catch (err) { toast(err.message); }
+}
+$("pic-change").addEventListener("click", () => $("pic-file").click());
+$("pic-file").addEventListener("change", async e => { const f = e.target.files[0]; e.target.value = ""; if (f) savePic(await squareImage(f)); });
+$("pic-remove").addEventListener("click", () => savePic(null));
+const ADMIN_PIC = document.querySelector("#pfp-btn .pfp").src;
+function applyAdminPic(src) {
+  if (src === undefined) return;
+  document.querySelector("#pfp-btn .pfp").src = src || ADMIN_PIC;
+}
+
+// ---------- Compteur de sites livrés ----------
+function showSitesDone(n) {
+  if (typeof n !== "number" || n < 1) { $("sites-done").hidden = true; return; }
+  $("sites-done").hidden = false;
+  countTo($("sites-n"), n);
+}
+
+// Discussion avec le client (ou avec EXOTIQUELEO côté client)
+let chatOrder = null, chatKind = "msg", chatPoll = 0;
+function chatKindSet(kind) {
+  chatKind = kind;
+  $("chat-modes").querySelectorAll("[data-kind]").forEach(b => b.classList.toggle("on", b.dataset.kind === kind));
+  $("chat-text").placeholder = kind === "modif" ? "Explique ce que tu veux changer sur ton site (couleurs, texte, liens, une section en plus…)" : kind === "probleme" ? "Explique ton problème : le staff te répond au plus vite." : "Écris ton message…";
+}
+$("chat-modes").addEventListener("click", e => { const b = e.target.closest("[data-kind]"); if (b && !b.disabled) { chatKindSet(b.dataset.kind); $("chat-text").focus(); } });
+$("chat-problem").addEventListener("click", () => { chatKindSet("probleme"); $("chat-text").focus(); });
+
+function renderChat(messages) {
+  const list = $("chat-list");
+  const atBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 40;
+  list.replaceChildren();
+  if (!messages.length) list.append(el("p", "empty", session.admin ? "Aucun message. Écris au client ici." : "Pose ta question ou demande une modification, je te réponds ici."));
+  messages.forEach(m => {
+    if (m.from === "system") {
+      const b = el("div", "msg sys");
+      b.append(el("p", null, m.text));
+      if (m.url) { const a = el("a", "btn main", "Voir le site →"); a.href = m.url; a.target = "_blank"; a.rel = "noopener"; b.append(a); }
+      if (m.quote) b.append(button("📝 Ouvrir le devis", () => openQuote(chatOrder), "btn"));
+      b.append(el("small", null, day(m.at)));
+      list.append(b);
+      return;
+    }
+    const mine = (m.from === "admin") === !!session.admin;
+    const b = el("div", "msg" + (mine ? " me" : "") + (m.kind === "modif" ? " modif" : m.kind === "probleme" ? " probleme" : ""));
+    b.append(el("p", null, m.text), el("small", null, (m.from === "admin" ? "EXOTIQUELEO" : chatOrder.user) + " · " + day(m.at)));
+    list.append(b);
+  });
+  if (atBottom || !list.dataset.seen) { list.scrollTop = list.scrollHeight; list.dataset.seen = "1"; }
+}
+
+async function loadChat() {
+  if (!chatOrder || $("chat").hidden) { clearInterval(chatPoll); return; }
+  try { const r = await api("chatGet", { orderId: chatOrder.id }); renderChat(r.messages); } catch (err) { toast(err.message); }
+}
+
+function openChat(o, kind) {
+  chatOrder = o;
+  if (session.admin) o.unreadAdmin = 0; else o.unreadClient = 0;
+  $("chat-sub").textContent = "Demande n° " + o.ref;
+  $("chat-name").textContent = session.admin ? (o.name || o.user) : "EXOTIQUELEO";
+  $("chat-modes").hidden = !!session.admin;
+  $("chat-help").hidden = !!session.admin;
+  const lockedNow = o.locked && o.status !== "terminée";
+  const modifBtn = $("chat-modes").querySelector('[data-kind="modif"]');
+  modifBtn.disabled = !!lockedNow;
+  modifBtn.title = lockedNow ? "Devis signé : la commande ne peut plus être modifiée avant la livraison" : "";
+  if (lockedNow && kind === "modif") kind = "msg";
+  chatKindSet(session.admin ? "msg" : kind || "msg");
+  delete $("chat-list").dataset.seen;
+  $("chat-list").replaceChildren(el("p", "empty", "Chargement…"));
+  showModal("chat");
+  $("chat-text").focus();
+  loadChat();
+  clearInterval(chatPoll);
+  chatPoll = setInterval(loadChat, 8000);
+}
+
+$("chat-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const text = $("chat-text").value.trim();
+  if (!text || !chatOrder) return;
+  const btn = e.target.querySelector("[type=submit]");
+  btn.disabled = true;
+  try {
+    const r = await api("chatSend", { orderId: chatOrder.id, text, kind: chatKind });
+    $("chat-text").value = "";
+    $("chat-list").dataset.seen = "";
+    delete $("chat-list").dataset.seen;
+    renderChat(r.messages);
+    if (chatKind === "modif") { toast("Demande de modification envoyée"); chatKindSet("msg"); }
+    else if (chatKind === "probleme") { toast("Le staff a été prévenu"); chatKindSet("msg"); }
+  } catch (err) { toast(err.message); }
+  finally { btn.disabled = false; $("chat-text").focus(); }
+});
+$("chat-text").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("chat-form").requestSubmit(); } });
+
+// le client voit s'il a une réponse non lue : pastille sur le bouton du compte
+async function checkUnread() {
+  if (!session || session.admin) return;
+  try {
+    const { orders } = await api("me");
+    const n = orders.reduce((s, o) => s + (o.unreadClient || 0), 0);
+    const b = $("account-btn");
+    b.querySelector(".badge")?.remove();
+    if (n) { b.append(el("span", "badge", n)); toast("Tu as " + n + " nouveau" + (n > 1 ? "x" : "") + " message" + (n > 1 ? "s" : "") + " d'EXOTIQUELEO"); }
+  } catch {}
+}
 
 // Minuteur
 let timerData = null;
@@ -2153,9 +2688,13 @@ getConfig().then(cfg => {
   setPrice(cfg.price);
   if (Array.isArray(cfg.examples)) { examples = cfg.examples; renderExamples(); }
   showTimer(cfg.timer);
+  showSitesDone(cfg.sitesDone);
+  if (cfg.adminAvatar) applyAdminPic(cfg.adminAvatar);
 }).catch(() => {});
 
 refreshWho();
+checkUnread();
+setInterval(checkUnread, 60e3);
 
 async function loadStats() {
   try {
